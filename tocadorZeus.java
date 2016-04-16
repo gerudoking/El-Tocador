@@ -58,6 +58,7 @@ public class Tocador extends JFrame implements Runnable
         final JButton botaoMOSTRADORinstante = constroiBotao(" ", 9);  
         final JButton botaoMOSTRADORvalorvolume = constroiBotao(" ", 9); 
         final JButton botaoMOSTRADORevento = constroiBotao("Evento:", 9);
+        final JButton botaoMOSTRADORparametros = constroiBotao("Parametros:", 9);
         
 	
 	private Sequencer  sequenciador = null;
@@ -201,7 +202,7 @@ public class Tocador extends JFrame implements Runnable
                     p5.add(sliderVolume);
                     p5.add(botaoMOSTRADORvalorvolume);
                     
-                    p6.add(botaoMOSTRADORevento);
+                    p6.add(botaoMOSTRADORparametros);
                     
                             
                     p3.add(p4, BorderLayout.CENTER);
@@ -368,7 +369,8 @@ public class Tocador extends JFrame implements Runnable
                   try {  		
                         sliderPROGRESSOinstante.setValue(pos);								
                         botaoMOSTRADORinstante.setText(formataInstante(t));
-                        botaoMOSTRADORevento.setText( "Evento:" + Exibe_mid(sequenciador));
+                        botaoMOSTRADORevento.setText( "Evento: " + Exibe_mid(sequencia));
+                        botaoMOSTRADORparametros.setText( "Parametros: " + Exibe_parametros(sequencia));
                         retardo(1000);
                         if(t>=dur) {  sliderPROGRESSOinstante.setValue(0);								
                                       botaoMOSTRADORinstante.setText(formataInstante(0));   
@@ -455,17 +457,32 @@ public class Tocador extends JFrame implements Runnable
             return botao;
 	}
 
-        public String Exibe_mid(Sequencer sequenciador){
+        public String Exibe_mid(Sequence sequencia){
             
+            String cu = "meu cu";
+            
+            
+            return(cu);
+        }
+        
+        public String Exibe_parametros(Sequence sequencia){
             long tick;
             
-            tick= sequenciador.getTickLength();
+            long time = sequencia.getMicrosecondLength()/1000000;
+            int res = sequencia.getResolution();
+            long ticks = sequencia.getTickLength();
             
-            String evento = ("Evento: tick-" + tick + "");
+            float tick_time       = (float)time/ticks;
+            float seminima    = tick_time*res;
+            float bpm            = 60/seminima;
+            int   total_seminimas = (int)(time/seminima);
+            
+            tick= sequencia.getTickLength();
+            
+            String evento = ("Resolução-" + res + " Duração-" + time + " Numero de tiques-" + ticks +" Duração do tique-"+ tick_time +" Duração da seminima-"+ seminima +" Total de seminimas-"+ total_seminimas +" Andamento-" + Math.round(bpm));
             return(evento);
         }
 
-    //---procedimento para customizar a interface GUI
     private void personalizarInterfaceUsuario()
     {
             UIManager.put("FileChooser.openDialogTitleText", "Abrir arquivo midi");
