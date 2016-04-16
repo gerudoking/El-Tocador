@@ -184,7 +184,6 @@ public class Tocador extends JFrame implements Runnable
                             }
                         }
                     });
-                    JLabel tique = new JLabel("Tique da Música: ");
                     
                     p1.add(botaoMOSTRADORcaminho);
                     
@@ -201,6 +200,9 @@ public class Tocador extends JFrame implements Runnable
                     p5.add(vol); 
                     p5.add(sliderVolume);
                     p5.add(botaoMOSTRADORvalorvolume);
+                    
+                    p6.add(botaoMOSTRADORevento);
+                    
                             
                     p3.add(p4, BorderLayout.CENTER);
                     
@@ -208,7 +210,8 @@ public class Tocador extends JFrame implements Runnable
                     painel.add(p2, BorderLayout.WEST);
                     painel.add(p3, BorderLayout.CENTER);
                     painel.add(p5, BorderLayout.EAST);
-
+                    painel.add(p6, BorderLayout.SOUTH);
+                    
                     setSize(largura, altura);  
                     setLocation(posx,posy); 
                     setDefaultCloseOperation(EXIT_ON_CLOSE);                     
