@@ -1,4 +1,4 @@
-package playpack.trabalho1;
+package projetoics;
 
 import java.awt.BorderLayout;
 import java.text.DecimalFormat;
@@ -17,6 +17,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.UIManager;
+import javax.swing.JTextField;
 
 import java.awt.Dimension;
 import java.awt.Container;
@@ -34,6 +35,8 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class Tocador extends JFrame implements Runnable
 {                          
@@ -59,6 +62,8 @@ public class Tocador extends JFrame implements Runnable
         final JButton botaoMOSTRADORvalorvolume = constroiBotao(" ", 9); 
         final JButton botaoMOSTRADORevento = constroiBotao("Evento:", 9);
         final JButton botaoMOSTRADORparametros = constroiBotao("Parametros:", 9);
+        
+        JTextField textField = constroiTexto(30);
         
 	
 	private Sequencer  sequenciador = null;
@@ -92,14 +97,21 @@ public class Tocador extends JFrame implements Runnable
             //ImageIcon logo   = new javax.swing.ImageIcon(getClass().getResource("ics25.png"));
             //setIconImage(logo.getImage());            
             
-            Color corOPR = new Color(180, 220, 220);
+            Color corBotao = new Color(0, 210, 200);
+            Color corLetra = new Color(0, 0, 0);
             Color corARQ = new Color(230, 230, 228);
             
-            botaoABRIR.setBackground(corOPR);
-            botaoTOCAR.setBackground(corOPR);
-            botaoPAUSAR.setBackground(corOPR);
-            botaoPARAR.setBackground(corOPR);
-                        
+            botaoABRIR.setBackground(corBotao);
+            botaoTOCAR.setBackground(corBotao);
+            botaoPAUSAR.setBackground(corBotao);
+            botaoPARAR.setBackground(corBotao);
+            botaoMOSTRADORparametros.setBackground(corBotao);
+            
+            botaoABRIR.setForeground(corLetra);
+            botaoTOCAR.setForeground(corLetra);
+            botaoPAUSAR.setForeground(corLetra);
+            botaoPARAR.setForeground(corLetra);
+            botaoMOSTRADORparametros.setForeground(corLetra);
               
             botaoABRIR.setEnabled(true);
             botaoTOCAR.setEnabled(false);
@@ -122,7 +134,7 @@ public class Tocador extends JFrame implements Runnable
                     p3.setLayout(new BorderLayout(5, 5));
                     p4.setLayout(new BorderLayout(5, 5));
                     p5.setLayout(new GridLayout(3, 1));
-                    p6.setLayout(new GridLayout(1, 2));
+                    p6.setLayout(new GridLayout(2, 1));
                     botaoABRIR.addActionListener(new ActionListener()
                     { public void actionPerformed(ActionEvent e)
                       { abrir();
@@ -203,6 +215,7 @@ public class Tocador extends JFrame implements Runnable
                     p5.add(botaoMOSTRADORvalorvolume);
                     
                     p6.add(botaoMOSTRADORparametros);
+                    p6.add(textField);
                     
                             
                     p3.add(p4, BorderLayout.CENTER);
@@ -456,6 +469,18 @@ public class Tocador extends JFrame implements Runnable
             botao.setFont(botao.getFont().deriveFont(tamanhoFonte));
             return botao;
 	}
+        
+        public JTextField constroiTexto(int col){
+            JTextField texto;
+            JTextArea area;
+            texto = new JTextField(col);
+            
+            area = new JTextArea(5, col);
+            area.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(area);
+            
+            return texto;
+        }
 
         public String Exibe_mid(Sequence sequencia){
             
