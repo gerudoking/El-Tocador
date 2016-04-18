@@ -35,12 +35,16 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.Track;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class Tocador extends JFrame implements Runnable
 {                          
-        private  int largura = 750;
+        private  int largura = 500;
         private  int altura  = 180;
         
         private  int posx   = 400;
@@ -91,11 +95,11 @@ public class Tocador extends JFrame implements Runnable
 
 	public Tocador()
         {  
-            super("Tocador Zeus");  
+            super("Tocador");  
             personalizarInterfaceUsuario();   
             
-            ImageIcon logo   = new javax.swing.ImageIcon(getClass().getResource("iconICS.png"));
-            setIconImage(logo.getImage());                
+            //ImageIcon logo   = new javax.swing.ImageIcon(getClass().getResource("ics25.png"));
+            //setIconImage(logo.getImage());            
             
             Color corBotao = new Color(0, 210, 200);
             Color corLetra = new Color(0, 0, 0);
@@ -481,13 +485,210 @@ public class Tocador extends JFrame implements Runnable
             
             return texto;
         }
+        
+        static final int FORMULA_DE_COMPASSO = 0x58;
+    
+    static Par getFormulaDeCompasso(Track trilha)
+    {   int p=1;
+        int q=1;
+
+        for(int i=0; i<trilha.size(); i++)
+        {
+          MidiMessage m = trilha.get(i).getMessage();
+          if(m instanceof MetaMessage) 
+          {
+            if(((MetaMessage)m).getType()==FORMULA_DE_COMPASSO)
+            {
+                MetaMessage mm = (MetaMessage)m;
+                byte[] data = mm.getData();
+                p = data[0];
+                q = data[1];
+                return new Par(p,q);
+            }
+          }
+        }
+        return new Par(p,q);
+    }          
+    
+    
+    
+    static private class Par
+    { int x, y;
+      
+      Par (int x_, int y_)  
+      { this.x = x_;
+        this.y = y_;          
+      }
+    
+      int getX()
+      { return x;
+      }
+      
+      int getY()
+      { return y;
+      }
+    
+    }
+    
+    
+    
+    static final int MENSAGEM_TONALIDADE = 0x59;  
+    
+    static String getTonalidade(Track trilha) throws InvalidMidiDataException
+    {       
+       String stonalidade = "";
+       for(int i=0; i<trilha.size(); i++)
+       { MidiMessage m = trilha.get(i).getMessage();
+       
+              
+       if(((MetaMessage)m).getType() == MENSAGEM_TONALIDADE)    
+       {
+            MetaMessage mm        = (MetaMessage)m;
+            byte[]     data       = mm.getData();
+            byte       tonalidade = data[0];
+            byte       maior      = data[1];
+
+            String       smaior = "Maior";
+            if(maior==1) smaior = "Menor";
+
+            if(smaior.equalsIgnoreCase("Maior"))
+            {
+                switch (tonalidade)
+                {
+                    case -7: stonalidade = "Dób Maior"; break;
+                    case -6: stonalidade = "Solb Maior"; break;
+                    case -5: stonalidade = "Réb Maior"; break;
+                    case -4: stonalidade = "Láb Maior"; break;
+                    case -3: stonalidade = "Mib Maior"; break;
+                    case -2: stonalidade = "Sib Maior"; break;
+                    case -1: stonalidade = "Fá Maior"; break;
+                    case  0: stonalidade = "Dó Maior"; break;
+                    case  1: stonalidade = "Sol Maior"; break;
+                    case  2: stonalidade = "Ré Maior"; break;
+                    case  3: stonalidade = "Lá Maior"; break;
+                    case  4: stonalidade = "Mi Maior"; break;
+                    case  5: stonalidade = "Si Maior"; break;
+                    case  6: stonalidade = "Fá# Maior"; break;
+                    case  7: stonalidade = "Dó# Maior"; break;
+                }
+            }
+
+            else if(smaior.equalsIgnoreCase("Menor"))
+            {
+                switch (tonalidade)
+                {
+                    case -7: stonalidade = "Láb Menor"; break;
+                    case -6: stonalidade = "Mib Menor"; break;
+                    case -5: stonalidade = "Sib Menor"; break;
+                    case -4: stonalidade = "Fá Menor"; break;
+                    case -3: stonalidade = "Dó Menor"; break;
+                    case -2: stonalidade = "Sol Menor"; break;
+                    case -1: stonalidade = "Ré Menor"; break;
+                    case  0: stonalidade = "Lá Menor"; break;
+                    case  1: stonalidade = "Mi Menor"; break;
+                    case  2: stonalidade = "Si Menor"; break;
+                    case  3: stonalidade = "Fá# Menor"; break;
+                    case  4: stonalidade = "Dó# Menor"; break;
+                    case  5: stonalidade = "Sol# Menor"; break;
+                    case  6: stonalidade = "Ré# Menor"; break;
+                    case  7: stonalidade = "Lá# Menor"; break;
+                }
+            }
+         }
+      }
+      return stonalidade;
+    }
+          
+
+
+
+    static final int MENSAGEM_TEXTO = 0x01;  
+    
+    static String getTexto(Track trilha) throws InvalidMidiDataException
+    {       
+       String stexto = "";
+
+       for(int i=0; i<trilha.size(); i++)
+       { MidiMessage m = trilha.get(i).getMessage();
+              
+         if(((MetaMessage)m).getType() == MENSAGEM_TEXTO)    
+         {                
+           MetaMessage mm  = (MetaMessage)m;
+           byte[]     data = mm.getData();
+
+           for(int j=0; j<data.length; j++)
+           { stexto += (char)data[j];
+           }         
+        }       
+     }    
+     return stexto;
+    }
 
         public String Exibe_mid(Sequence sequencia){
             
-            String cu = "meu cu";
+            String output = "";
             
+            Track[] trilhas = sequencia.getTracks();
+              
+              for(int i=0; i<trilhas.length; i++)
+              {
+                System.out.println("Início da trilha nº " + i + " **********************");
+	             System.out.println("------------------------------------------");
+                Track trilha =  trilhas[i];
+                
+                Par    fc  =  null;
+                String st  = "--";
+                String stx = "--";
+                
+                //---MetaMensagem de fórmula de compasso
+                if(i==0) fc = getFormulaDeCompasso(trilha);
+
+                //---MetaMensagem de tonalidade
+                if(i==0)
+                try{ st =  getTonalidade(trilha);
+                   }
+                catch(Exception e){}
+                
+                //---MetaMensagem de texto
+                try{ stx =  getTexto(trilha);
+                   }
+                catch(Exception e){}
+                
+                if(fc!=null)
+	             System.out.println("Fórmula de Compasso: " + fc.getX() +":"+ (int)(Math.pow(2, fc.getY())) );
+	        
+                System.out.println("Tonalidade         : " + st);
+	             System.out.println("Texto              : " + stx);
+	             System.out.println("------------------------------------------");
+                
+                for(int j=0; j<trilha.size(); j++)
+                {
+                  System.out.println("Trilha nº " + i );
+                  System.out.println("Evento nº " + j);
+                  MidiEvent   e          = trilha.get(j);
+                  MidiMessage mensagem   = e.getMessage();
+                  long        tique      = e.getTick();
+                  
+                  int n = mensagem.getStatus();
+                  
+                  String nomecomando = ""+n;
+                  
+                  switch(n)
+                  {
+                      case 128: nomecomando = "noteON"; break;
+                      case 144: nomecomando = "noteOFF"; break;
+                      case 255: nomecomando = "MetaMensagem  (a ser decodificada)"; break; 
+                      //---(introduzir outros casos)
+                  }
+                  
+                  System.out.println("       Mensagem: " + nomecomando );
+                  System.out.println("       Instante: " + tique );
+	               System.out.println("------------------------------------------");                                    
+                }
+              } 
+              
             
-            return(cu);
+            return(output);
         }
         
         public String Exibe_parametros(Sequence sequencia){
@@ -584,7 +785,4 @@ public class Tocador extends JFrame implements Runnable
             UIManager.put("ProgressBar.font", new javax.swing.plaf.FontUIResource(new Font("Arial", java.awt.Font.PLAIN, 10)));
         }
         
-                
- 
- 
 }
