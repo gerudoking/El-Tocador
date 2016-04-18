@@ -40,7 +40,7 @@ import javax.swing.JTextArea;
 
 public class Tocador extends JFrame implements Runnable
 {                          
-        private  int largura = 500;
+        private  int largura = 750;
         private  int altura  = 180;
         
         private  int posx   = 400;
