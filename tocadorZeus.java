@@ -41,6 +41,7 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Track;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 public class Tocador extends JFrame implements Runnable
 {                          
@@ -68,6 +69,8 @@ public class Tocador extends JFrame implements Runnable
         final JButton botaoMOSTRADORparametros = constroiBotao("Parametros:", 9);
         
         JTextArea textField = constroiTexto(30);
+        
+        JScrollPane scroll = new JScrollPane ( textField );
 	
 	private Sequencer  sequenciador = null;
 	private Sequence   sequencia;
@@ -125,6 +128,7 @@ public class Tocador extends JFrame implements Runnable
                     JPanel p4 = new JPanel();
                     JPanel p5 = new JPanel();
                     JPanel p6 = new JPanel();
+                    JPanel p7 = new JPanel();
                     
                     JPanel painelOPERACOES = new JPanel();
  
@@ -198,6 +202,8 @@ public class Tocador extends JFrame implements Runnable
                         }
                     });
                     
+                    scroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+                    
                     p1.add(botaoMOSTRADORcaminho);
                     
                     p2.add(botaoABRIR);  
@@ -215,8 +221,8 @@ public class Tocador extends JFrame implements Runnable
                     p5.add(botaoMOSTRADORvalorvolume);
                     
                     p6.add(botaoMOSTRADORparametros);
-                    p6.add(textField);
-                            
+                    p6.add(scroll);
+                    
                     p3.add(p4, BorderLayout.CENTER);
                     
                     painel.add(p1, BorderLayout.NORTH);
@@ -469,13 +475,11 @@ public class Tocador extends JFrame implements Runnable
 	}
         
         public JTextArea constroiTexto(int col){
-            JTextField texto;
             JTextArea area;
-            texto = new JTextField(col);
             
             area = new JTextArea(5, col);
             area.setEditable(false);
-            JScrollPane scrollPane = new JScrollPane(area);
+            area.setAutoscrolls(true);
             
             return area;
         }
