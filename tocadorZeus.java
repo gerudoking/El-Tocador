@@ -627,7 +627,9 @@ public class Tocador extends JFrame implements Runnable
               for(int i=0; i<trilhas.length; i++)
               {
                 System.out.println("Início da trilha nº " + i + " **********************");
-	             System.out.println("------------------------------------------");
+                textField.append("Início da trilha nº " + i + " **********************\n");
+	        System.out.println("------------------------------------------");
+                textField.append("------------------------------------------\n");
                 Track trilha =  trilhas[i];
                 
                 Par    fc  =  null;
@@ -648,17 +650,24 @@ public class Tocador extends JFrame implements Runnable
                    }
                 catch(Exception e){}
                 
-                if(fc!=null)
-	             System.out.println("Fórmula de Compasso: " + fc.getX() +":"+ (int)(Math.pow(2, fc.getY())) );
-	        
+                if(fc!=null){
+                    System.out.println("Fórmula de Compasso: " + fc.getX() +":"+ (int)(Math.pow(2, fc.getY())) );
+                    textField.append("Fórmula de Compasso: \n" + fc.getX() +":"+ (int)(Math.pow(2, fc.getY())) );
+                }
+                            
                 System.out.println("Tonalidade         : " + st);
-	             System.out.println("Texto              : " + stx);
-	             System.out.println("------------------------------------------");
+                textField.append("Tonalidade         : \n" + st);
+	        System.out.println("Texto              : " + stx);
+                textField.append("Texto              : \n" + stx);
+	        System.out.println("------------------------------------------");
+                textField.append("------------------------------------------\n");
                 
                 for(int j=0; j<trilha.size(); j++)
                 {
                   System.out.println("Trilha nº " + i );
+                  textField.append("Trilha nº \n" + i );
                   System.out.println("Evento nº " + j);
+                  textField.append("Evento nº \n" + j);
                   MidiEvent   e          = trilha.get(j);
                   MidiMessage mensagem   = e.getMessage();
                   long        tique      = e.getTick();
@@ -676,8 +685,11 @@ public class Tocador extends JFrame implements Runnable
                   }
                   
                   System.out.println("       Mensagem: " + nomecomando );
+                  textField.append("       Mensagem: \n" + nomecomando );
                   System.out.println("       Instante: " + tique );
-	               System.out.println("------------------------------------------");                                    
+                  textField.append("       Instante: \n" + tique );
+	          System.out.println("------------------------------------------");
+                  textField.append("------------------------------------------\n");
                 }
               } 
               
