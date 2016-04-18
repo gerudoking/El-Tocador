@@ -45,7 +45,7 @@ import javax.swing.JTextArea;
 public class Tocador extends JFrame implements Runnable
 {                          
         private  int largura = 750;
-        private  int altura  = 180;
+        private  int altura  = 350;
         
         private  int posx   = 400;
         private  int posy   = 140;
@@ -67,7 +67,7 @@ public class Tocador extends JFrame implements Runnable
         final JButton botaoMOSTRADORevento = constroiBotao("Evento:", 9);
         final JButton botaoMOSTRADORparametros = constroiBotao("Parametros:", 9);
         
-        JTextField textField = constroiTexto(30);
+        JTextArea textField = constroiTexto(30);
 	
 	private Sequencer  sequenciador = null;
 	private Sequence   sequencia;
@@ -468,7 +468,7 @@ public class Tocador extends JFrame implements Runnable
             return botao;
 	}
         
-        public JTextField constroiTexto(int col){
+        public JTextArea constroiTexto(int col){
             JTextField texto;
             JTextArea area;
             texto = new JTextField(col);
@@ -477,7 +477,7 @@ public class Tocador extends JFrame implements Runnable
             area.setEditable(false);
             JScrollPane scrollPane = new JScrollPane(area);
             
-            return texto;
+            return area;
         }
         
         static final int FORMULA_DE_COMPASSO = 0x58;
