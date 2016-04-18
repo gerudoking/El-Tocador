@@ -44,7 +44,7 @@ import javax.swing.JTextArea;
 
 public class Tocador extends JFrame implements Runnable
 {                          
-        private  int largura = 500;
+        private  int largura = 750;
         private  int altura  = 180;
         
         private  int posx   = 400;
@@ -68,22 +68,18 @@ public class Tocador extends JFrame implements Runnable
         final JButton botaoMOSTRADORparametros = constroiBotao("Parametros:", 9);
         
         JTextField textField = constroiTexto(30);
-        
 	
 	private Sequencer  sequenciador = null;
 	private Sequence   sequencia;
 	private Receiver   receptor                = null;
 	private long       inicio = 0; 
-	
         
 	private int          volumeATUAL             = 75;
 	private JSlider      sliderVolume            = new JSlider(JSlider.HORIZONTAL,0, 127, volumeATUAL);        
         private JProgressBar sliderPROGRESSOinstante = new JProgressBar();
-        
 	
 	private Container painel = getContentPane(); 
         private boolean   soando = false;  
-
 
 	public static void main(String[] args)
         {
@@ -95,11 +91,11 @@ public class Tocador extends JFrame implements Runnable
 
 	public Tocador()
         {  
-            super("Tocador");  
+            super("Tocador Zeus");  
             personalizarInterfaceUsuario();   
             
-            //ImageIcon logo   = new javax.swing.ImageIcon(getClass().getResource("ics25.png"));
-            //setIconImage(logo.getImage());            
+            ImageIcon logo   = new javax.swing.ImageIcon(getClass().getResource("iconICS.png"));
+            setIconImage(logo.getImage());            
             
             Color corBotao = new Color(0, 210, 200);
             Color corLetra = new Color(0, 0, 0);
@@ -220,7 +216,6 @@ public class Tocador extends JFrame implements Runnable
                     
                     p6.add(botaoMOSTRADORparametros);
                     p6.add(textField);
-                    
                             
                     p3.add(p4, BorderLayout.CENTER);
                     
@@ -234,7 +229,7 @@ public class Tocador extends JFrame implements Runnable
                     setLocation(posx,posy); 
                     setDefaultCloseOperation(EXIT_ON_CLOSE);                     
                     setVisible(true);  
-                    //this.setResizable(false);
+                    this.setResizable(false);
             }
             catch(Exception e){
                     System.out.println(e.getMessage());
@@ -417,7 +412,6 @@ public class Tocador extends JFrame implements Runnable
       {
         String inicio    = "";
 
-        //--------início
         double h1  = (int)(t1/3600.0);
         double m1  = (int)((t1 - 3600*h1)/60);
         double s1  = (t1 - (3600*h1 +60*m1));
