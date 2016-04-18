@@ -91,11 +91,11 @@ public class Tocador extends JFrame implements Runnable
 
 	public Tocador()
         {  
-            super("Tocador");  
+            super("Tocador Zeus");  
             personalizarInterfaceUsuario();   
             
-            //ImageIcon logo   = new javax.swing.ImageIcon(getClass().getResource("ics25.png"));
-            //setIconImage(logo.getImage());            
+            ImageIcon logo   = new javax.swing.ImageIcon(getClass().getResource("iconICS.png"));
+            setIconImage(logo.getImage());                
             
             Color corBotao = new Color(0, 210, 200);
             Color corLetra = new Color(0, 0, 0);
